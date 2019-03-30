@@ -6,19 +6,15 @@ For the examples we are using 'requests' which is a popular minimalistic python 
 Please use 'pip install requests' to add it to your python libraries.
 """
 
-url = "https://www.blackrock.com/tools/hackathon/portfolio-analysis?calculateExposures=true&calculatePerformance=true&graph=resultMap.PORTFOLIOS%5Bportfolios%5Breturns%5BperformanceChart%5D%5D%5D&identifierType=ticker&positions=VZ~25%7CWMT~25%7CFB~25%7CAAPL~25&startDate=1522400400"
-
-portfolioAnalysisRequest = requests.get(url)
-t = portfolioAnalysisRequest.text # get in text string format, same as json.dumps()
-j = json.loads(t) # string to json, returns a dict of [epoch time, percentage compared to 100%]
 
 """
-formula to calc daily winning/losing percentages
-(cur_percentage - prev_percentage) / prev_percentage
+time_overall_percentage_dict: [[epoch time, percentage compared to 100%]]
+overall_percentage: percentage changes compared to when market first opens
+daily_percentage: (cur_percentage - prev_percentage) / prev_percentage
 """
 
-def getGraphVals(j):
-	time_overall_percentage_dict = j['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['returns']['performanceChart']
+def getGraphVals(json_obj):
+	time_overall_percentage_dict = json_obj['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['returns']['performanceChart']
 	epoch_time = [row[0] for row in time_overall_percentage_dict]
 	overall_percentage = [row[1] for row in time_overall_percentage_dict]
 
@@ -28,5 +24,10 @@ def getGraphVals(j):
 
 	return time_overall_percentage_dict, overall_percentage, daily_percentage
 
-getGraphVals(j)
+def getResponse(url = "https://www.blackrock.com/tools/hackathon/portfolio-analysis?calculateExposures=true&calculatePerformance=true&graph=resultMap.PORTFOLIOS%5Bportfolios%5Breturns%5BperformanceChart%5D%5D%5D&identifierType=ticker&positions=VZ~25%7CWMT~25%7CFB~25%7CAAPL~25&startDate=1522400400"):
+	portfolioAnalysisRequest = requests.get(url)
+	t = portfolioAnalysisRequest.text # get in text string format, same as json.dumps()
+	json_obj = json.loads(t) # string to json, returns a dict of [epoch time, percentage compared to 100%]
+	
+	return getGraphVals(json_obj)
 
