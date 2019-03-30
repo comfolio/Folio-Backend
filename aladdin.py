@@ -8,7 +8,8 @@ Please use 'pip install requests' to add it to your python libraries.
 
 
 """
-time_overall_percentage_dict: [[epoch time, percentage compared to 100%]]
+epoch_time: time index 
+time_overall_percentage_dict: [d[epoch time, percentage compared to 100%]]
 overall_percentage: percentage changes compared to when market first opens
 daily_percentage: (cur_percentage - prev_percentage) / prev_percentage
 """
@@ -22,7 +23,7 @@ def getGraphVals(json_obj):
 	for i in range(1, len(overall_percentage)):
 		daily_percentage.append(overall_percentage[i] - overall_percentage[i-1] / overall_percentage[i-1])
 
-	return time_overall_percentage_dict, overall_percentage, daily_percentage
+	return epoch_time, time_overall_percentage_dict, overall_percentage, daily_percentage
 
 def getResponse(url = "https://www.blackrock.com/tools/hackathon/portfolio-analysis?calculateExposures=true&calculatePerformance=true&graph=resultMap.PORTFOLIOS%5Bportfolios%5Breturns%5BperformanceChart%5D%5D%5D&identifierType=ticker&positions=VZ~25%7CWMT~25%7CFB~25%7CAAPL~25&startDate=1522400400"):
 	portfolioAnalysisRequest = requests.get(url)
