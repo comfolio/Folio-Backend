@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from aladdin import getResponse
 from URLMaker import URLMaker
-import datetime
 import io, base64
 
 def save_to_tmp_file():
@@ -23,9 +22,7 @@ def save_to_tmp_file():
 
     return b64
 
-current_time = datetime.datetime.now(datetime.timezone.utc)
-defaultstartdate = int(current_time.timestamp() - (360 * 24 * 60 * 60 * 5))
-def GraphMaker(portfolio, startdate = defaultstartdate):
+def GraphMaker(portfolio, startdate = '20180331'):
     """
     Plots and saves graphs for: the entire data from start date and on, last 30 days,
     last 90 days, last 150 days and last year (360 days)
