@@ -16,7 +16,7 @@ def save_to_tmp_file():
     Saves an in memory image
     '''
     sio = io.BytesIO()
-    plt.savefig(sio, format='png')
+    plt.savefig(sio, transparent=True, format='png', dpi=1000)
     sio.seek(0)
     buffer = sio.getvalue()
     b64 = base64.b64encode(buffer)
@@ -67,9 +67,15 @@ def GraphMaker(portfolio, startdate = defaultstartdate):
     ax.set_facecolor((36/255,39/255,38/255))
     
     # Axis labels
-    plt.xlabel('time (days)')
-    plt.ylabel('percentage')
-    plt.grid()
+    font = {'fontname':'Arial'}
+    plt.xlabel('Time (days)', color = (54/255,195/255,165/255), **font)
+    plt.ylabel('Percentage', color = (54/255,195/255,165/255), **font)
+    ax.tick_params(axis='x', colors=(54/255,195/255,165/255))
+    ax.tick_params(axis='y', colors=(54/255,195/255,165/255))
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.spines['left'].set_color((54/255,195/255,165/255))
+    ax.spines['bottom'].set_color((54/255,195/255,165/255))
     image = save_to_tmp_file()
     image_dict['full'] = image
     
@@ -97,9 +103,15 @@ def GraphMaker(portfolio, startdate = defaultstartdate):
         ax.set_facecolor((36/255,39/255,38/255))
     
         # Axis labels
-        plt.xlabel('time (days)')
-        plt.ylabel('percentage')
-        plt.grid()
+        font = {'fontname':'Arial'}
+        plt.xlabel('Time (days)', color = (54/255,195/255,165/255), **font)
+        plt.ylabel('Percentage', color = (54/255,195/255,165/255), **font)
+        ax.tick_params(axis='x', colors=(54/255,195/255,165/255))
+        ax.tick_params(axis='y', colors=(54/255,195/255,165/255))
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.spines['left'].set_color((54/255,195/255,165/255))
+        ax.spines['bottom'].set_color((54/255,195/255,165/255))
         image = save_to_tmp_file()
         image_dict[timespans_strings[i]] = image
 
