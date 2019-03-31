@@ -1,8 +1,9 @@
 import datetime
 import calendar
 
-
-def URLMaker(dictionary, startdate):
+current_time = datetime.datetime.now(datetime.timezone.utc)
+defaultstartdate = int(current_time.timestamp() - (360 * 24 * 60 * 60 * 5))
+def URLMaker(dictionary, startdate = defaultstartdate):
     ##dictionary is the inputted dictionary in {ticker:percent ,...} format
     ##startdate is the startdate in epoch time.
     #Creating base URL string for call.
