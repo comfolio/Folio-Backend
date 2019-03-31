@@ -25,14 +25,14 @@ def PieMaker(portfolio):
     fig = plt.figure()
     plt.rcParams.update({'font.size': 15})
     plt.pie(sizes, labels=labels, colors=colors,
-    			   autopct='%1.1f%%', shadow=True, startangle=140, 
+    			   autopct='%1.1f%%', shadow=True, startangle=140,
                    textprops=dict(color= (54/255,195/255,165/255)))
 #    plt.legend(labels, loc="best")
     plt.axis('equal')
     plt.tight_layout()
     plt.axis('equal')
     fig.set_facecolor((36/255,39/255,38/255))
-    plt.show()
+    # plt.show()
     image = save_to_tmp_file()
 
     return image

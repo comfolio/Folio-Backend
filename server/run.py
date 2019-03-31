@@ -3,6 +3,7 @@ from flask_cors import CORS
 
 from fuzzywuzzy import fuzz, process
 
+import json
 import io
 
 app = Flask(__name__, static_url_path='/../../Comfolio-Frontend')
@@ -18,15 +19,6 @@ def parse_ticket_symbol_file(filename):
         symbol_map[symbol] = name
 
     return symbol_map
-
-def save_to_tmp_file():
-    sio = io.BytesIO()
-    plt.savefig(sio, format='png')
-    sio.seek(0)
-    buffer = sio.getvalue()
-    b64 = base64.b64encode(buffer)
-
-    return b64
 
 # nyse_data = parse_ticket_symbol_file('./ticker-symbols/NYSE.txt')
 nasdaq_data = parse_ticket_symbol_file('./ticker-symbols/NASDAQ.txt')
@@ -52,31 +44,28 @@ def get_tsymbol_list():
 
 @app.route('/generate-graph', methods=['GET'])
 def generate_graph():
-    import json
     input_tickers = json.loads(request.args.get('params').replace('%22', ''))
-    image_dict = GraphMaker(input_tickers)
-    print(image_dict)
-    return jsonify(image_dict['full'].decode("utf-8"))
+    start_epoch = request.args.get('epoch', type=int, default=-1)
+    if start_epoch != -1:
+        image_dict = GraphMaker(input_tickers, startdate = start_epoch)
+    else:
+        image_dict = GraphMaker(input_tickers)
+
+    final_dict = {
+        '30-days': image_dict['30'].decode("utf-8"),
+        '90-days': image_dict['90'].decode("utf-8"),
+        '150-days': image_dict['150'].decode("utf-8"),
+        '360-days': image_dict['360'].decode("utf-8"),
+        'full-days': image_dict['full'].decode("utf-8")
+    }
+
+    return jsonify(final_dict)
 
 @app.route('/generate-pie', methods=['GET'])
 def generate_pie():
-    import json
-    input_tickers = json.loads(request.args.get('params'))
-    image_dict = GraphMaker(input_tickers)
-    print(image_dict)
-    return jsonify(image_dict['full'].decode("utf-8"))
-
-@app.route('/get-leaderboard', methods=['GET'])
-def get_leaderboard():
-    pass
-
-@app.route('/get-portfolio', methods=['GET'])
-def get_portfolio():
-    pass
-
-@app.route('/update-portfolio', methods=['POST'])
-def update_portfolio():
-    pass
+    input_tickers = json.loads(request.args.get('params').replace('%22', ''))
+    image = PieMaker(input_tickers)
+    return jsonify(image.decode("utf-8"))
 
 from GraphMaker import GraphMaker
 from PieMaker import PieMaker
