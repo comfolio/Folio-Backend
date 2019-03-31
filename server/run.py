@@ -42,9 +42,22 @@ def get_tsymbol_list():
     nasdaq_data = parse_ticket_symbol_file('./ticker-symbols/NASDAQ.txt')
     return jsonify({ **nyse_data, **nasdaq_data })
 
+@app.route('/full-graph')
+def get_full_graph():
+    with open('user-data.json', 'r') as infile:
+        input_tickers = json.load(infile)
+
+    image_dict = GraphMaker(input_tickers)
+    full_img = image_dict['full'].decode("utf-8")
+    return full_img
+
 @app.route('/generate-graph', methods=['GET'])
 def generate_graph():
     input_tickers = json.loads(request.args.get('params').replace('%22', ''))
+
+    with open('user-data.json', 'w') as outfile:
+        json.dump(input_tickers, outfile)
+
     start_epoch = request.args.get('epoch', type=int, default=-1)
     if start_epoch != -1:
         image_dict = GraphMaker(input_tickers, startdate = start_epoch)
