@@ -38,7 +38,7 @@ def getExposure(json_obj):
 	print(name_list, y_list)
 	return name_list, y_list
 
-def getResponse(url, option): # option: {1,2} 1:getPortfolioAnalysis called 2: getExposure called
+def getResponse(url, option=1): # option: {1,2} 1:getPortfolioAnalysis called 2: getExposure called
 	portfolioAnalysisRequest = requests.get(url)
 	t = portfolioAnalysisRequest.text # get in text string format, same as json.dumps()
 	json_obj = json.loads(t) # string to json, returns a dict of [epoch time, percentage compared to 100%]
