@@ -25,7 +25,8 @@ def PieMaker(portfolio):
     fig = plt.figure()
     plt.rcParams.update({'font.size': 15})
     plt.pie(sizes, labels=labels, colors=colors,
-    			   autopct='%1.1f%%', shadow=True, startangle=140, textprops=dict(color="w"))
+    			   autopct='%1.1f%%', shadow=True, startangle=140, 
+                   textprops=dict(color= (54/255,195/255,165/255)))
 #    plt.legend(labels, loc="best")
     plt.axis('equal')
     plt.tight_layout()
