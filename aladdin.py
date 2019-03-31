@@ -32,13 +32,13 @@ def getPortfolioAnalysis(json_obj):
 def getExposure(json_obj):
 	# pprint(json_obj)
 	exposures = json_obj['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['exposures']['assetClass']
-	value_list = [d['value'] for d in exposures]
+	name_list = [d['name'] for d in exposures]
 	y_list = [d['y'] for d in exposures] 
 	
-	print(value_list, y_list)
-	return value_list, y_list
+	print(name_list, y_list)
+	return name_list, y_list
 
-def getResponse(option, url): # option: {1,2} 1:getPortfolioAnalysis called 2: getExposure called
+def getResponse(url, option): # option: {1,2} 1:getPortfolioAnalysis called 2: getExposure called
 	portfolioAnalysisRequest = requests.get(url)
 	t = portfolioAnalysisRequest.text # get in text string format, same as json.dumps()
 	json_obj = json.loads(t) # string to json, returns a dict of [epoch time, percentage compared to 100%]
@@ -49,9 +49,5 @@ def getResponse(option, url): # option: {1,2} 1:getPortfolioAnalysis called 2: g
 		res = getExposure(json_obj)	
 
 	return res
-
-# portfolio_analysis = getResponse(1, "https://www.blackrock.com/tools/hackathon/portfolio-analysis?calculateExposures=true&calculatePerformance=true&graph=resultMap.PORTFOLIOS%5Bportfolios%5Breturns%5BperformanceChart%5D%5D%5D&identifierType=ticker&positions=VZ~25%7CWMT~25%7CFB~25%7CVWO~25&startDate=1522400400")
-# exposures = getResponse(2, "https://www.blackrock.com/tools/hackathon/portfolio-analysis?betaPortfolios=SNP500&calculateExposures=true&calculatePerformance=true&calculateRisk=true&calculateStressTests=true&positions=AAPL~25%7CVWO~25%7CAGG~25%7CMALOX~25%7C&riskFreeRatePortfolio=LTBILL1-3M&scenarios=HIST_20081102_20080911%2CHIST_20110919_20110720%2CHIST_20130623_20130520%2CHIST_20140817_20140101%2CUS10Y_1SD%3A%3AAPB%2CINF2Y_1SD%3A%3AAPB%2CUSIG_1SD%3A%3AAPB%2CSPX_1SD%3A%3AAPB%2CDXY_1SD%3A%3AAPB")
-
 
 
