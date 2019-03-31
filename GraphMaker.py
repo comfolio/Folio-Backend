@@ -105,4 +105,4 @@ def GraphMaker(portfolio, startdate = defaultstartdate):
 
     return image_dict
         
-#GraphMaker({"AAPL":35, "NFLX":25, "FB":10, "MSFT":30})
+GraphMaker({"AAPL":35, "NFLX":25, "FB":10, "MSFT":30})
