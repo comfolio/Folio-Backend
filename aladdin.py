@@ -18,13 +18,13 @@ daily_percentage: (cur_percentage - prev_percentage) / prev_percentage
 """
 
 def getPortfolioAnalysis(json_obj):
-	pprint(json_obj)
+	# pprint(json_obj)
 	time_overall_percentage_dict = json_obj['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['returns']['performanceChart']
 
 	overall_percentage = [row[1] for row in time_overall_percentage_dict]
 	daily_percentage = [(0)]
 	for i in range(1, len(overall_percentage)):
-		daily_percentage.append((overall_percentage[i] - overall_percentage[i-1]) / overall_percentage[i-1])
+		daily_percentage.append((overall_percentage[i] - overall_percentage[i-1]) / overall_percentage[i-1] * 100)
 
 	overall_percentage = [v-1 for v in overall_percentage]
 
