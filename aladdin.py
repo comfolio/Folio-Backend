@@ -1,5 +1,8 @@
 import requests
 import json
+from pprint import pprint
+
+from URLMaker import URLMaker
 
 """
 For the examples we are using 'requests' which is a popular minimalistic python library for making HTTP requests.
@@ -14,13 +17,14 @@ overall_percentage: percentage changes compared to when market first opens
 daily_percentage: (cur_percentage - prev_percentage) / prev_percentage
 """
 
-def getGraphVals(json_obj):
+def getPortfolioAnalysis(json_obj):
+	pprint(json_obj)
 	time_overall_percentage_dict = json_obj['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['returns']['performanceChart']
 
 	overall_percentage = [row[1] for row in time_overall_percentage_dict]
 	daily_percentage = [(0)]
 	for i in range(1, len(overall_percentage)):
-		daily_percentage.append(overall_percentage[i] - overall_percentage[i-1] / overall_percentage[i-1])
+		daily_percentage.append((overall_percentage[i] - overall_percentage[i-1]) / overall_percentage[i-1])
 
 	overall_percentage = [v-1 for v in overall_percentage]
 
@@ -31,7 +35,7 @@ def getResponse(url = "https://www.blackrock.com/tools/hackathon/portfolio-analy
 	t = portfolioAnalysisRequest.text # get in text string format, same as json.dumps()
 	json_obj = json.loads(t) # string to json, returns a dict of [epoch time, percentage compared to 100%]
 	
-	return getGraphVals(json_obj)
+	return getPortfolioAnalysis(json_obj)
 
 getResponse()
 
