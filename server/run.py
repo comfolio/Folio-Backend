@@ -49,11 +49,13 @@ def get_full_graph():
 
     image_dict = GraphMaker(input_tickers)
     full_img = image_dict['full'].decode("utf-8")
-    return full_img
+    return jsonify(full_img)
 
 @app.route('/generate-graph', methods=['GET'])
 def generate_graph():
     input_tickers = json.loads(request.args.get('params').replace('%22', ''))
+
+    print(input_tickers)
 
     with open('user-data.json', 'w') as outfile:
         json.dump(input_tickers, outfile)
